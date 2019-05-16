@@ -1,43 +1,47 @@
 package com.banditos.dummymapreduce;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Random;
 
 public class MainGenerator {
 
+    // in mb
+    private static final long FILE_SIZE = 32000;
+    private static final byte[] CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".getBytes();
+
+    private static final Random random = new Random();
+
     public static void main(String[] args) throws IOException {
+        long start = System.currentTimeMillis();
+
         String pathToFile = "output/generated.txt";
         Path path = Paths.get(pathToFile);
 
-        try {
-            FileOutputStream out = new FileOutputStream(pathToFile, true);
-            FileChannel channel = out.getChannel();
-            // db query
-            while(iterate resultset) {
-                // get row result
-                writeData(channel, data);
+        Files.deleteIfExists(path);
+        Files.createFile(path);
+        do {
+            int count = 100000;
+            byte[] res = new byte[count*255];
+            int ptr = 0;
+            for (int i = 0; i < count; i++) {
+                int length = random.nextInt(155) + 100;
+                for (int j = 0; j < length; j++) {
+                    res[ptr++] = CHARSET[random.nextInt(CHARSET.length)];
+                }
+                res[ptr++] = '\n';
             }
-        } catch(Exception e){
-            //log
-        } finally {
-            channel.close();
-            out .close();
-        }
+            Files.write(path, res, StandardOpenOption.APPEND);
+            log(path, start);
+        } while (Files.size(path) / (1024 * 1024) <= FILE_SIZE);
+        log(path, start);
+    }
 
-        for (int i = 0; i < 20; i++) {
-            String s = Generator.generateWord();
-
-            Files.write(path, (s + System.lineSeparator()).getBytes(),
-                    Files.exists(path)
-                            ? StandardOpenOption.APPEND
-                            : StandardOpenOption.CREATE);
-            System.out.println(s);
-            System.out.println(s.length());
-        }
+    private static void log(Path path, long start) throws IOException {
+        System.out.println(String.format("Written %d MB for %d millis",
+                Files.size(path) / (1024 * 1024), System.currentTimeMillis() - start));
     }
 }
