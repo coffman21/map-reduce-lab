@@ -1,9 +1,13 @@
 package com.banditos.dummymapreduce;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,22 +33,22 @@ public class FileWorker {
         Files.delete(dirPath);
         Files.createDirectory(dirPath);
 
-        InputStream reader = Files.newInputStream(readFile);
+        BufferedReader bufferedReader = Files
+                .newBufferedReader(readFile, Charset.forName("UTF-8"));
 
         int i = 1;
         long ptr = 0;
-
         List<Path> paths = new ArrayList<>();
 
-        while (i < splitAmount) {
-            Path writeFile = Files.createFile(Paths.get(parentPathStr, "splitter", "split" + ptr));
+        while (i <= splitAmount) {
+            Path writeFile = Files.createFile(Paths.get(
+                    parentPathStr, "splitter", "split" + ptr + ".txt"));
             paths.add(writeFile);
-            OutputStream outputStream = Files.newOutputStream(writeFile);
-
+            BufferedWriter bufferedWriter = Files
+                    .newBufferedWriter(writeFile, Charset.forName("UTF-8"));
             do {
-                outputStream.write(reader.read());
+                bufferedWriter.write(bufferedReader.read());
             } while (ptr++ <= i * chunkSize);
-
             i++;
         }
         return paths;
