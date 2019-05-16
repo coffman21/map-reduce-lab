@@ -10,16 +10,16 @@ import java.util.Random;
 public class MainGenerator {
 
     // in mb
-    private static final long FILE_SIZE = 32000;
+    private static final long FILE_SIZE = 800;
     private static final byte[] CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".getBytes();
+    private static final String PATH_TO_FILE = "output/generated.txt";
 
     private static final Random random = new Random();
 
     public static void main(String[] args) throws IOException {
-        long start = System.currentTimeMillis();
 
-        String pathToFile = "output/generated.txt";
-        Path path = Paths.get(pathToFile);
+        long start = System.currentTimeMillis();
+        Path path = Paths.get(PATH_TO_FILE);
 
         Files.deleteIfExists(path);
         Files.createFile(path);
