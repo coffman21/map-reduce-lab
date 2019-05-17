@@ -1,17 +1,17 @@
 package com.banditos.dummymapreduce;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Random;
 
 public class MainGenerator {
 
     // in mb
     private static final long FILE_SIZE = 800;
-    private static final byte[] CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".getBytes();
+    private static final String CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final String PATH_TO_FILE = "output/generated.txt";
 
     private static final Random random = new Random();
@@ -23,18 +23,17 @@ public class MainGenerator {
 
         Files.deleteIfExists(path);
         Files.createFile(path);
+        BufferedWriter writer = Files.newBufferedWriter(path);
         do {
-            int count = 100000;
-            byte[] res = new byte[count*255];
-            int ptr = 0;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < 100000; i++) {
                 int length = random.nextInt(155) + 100;
+                StringBuilder stringBuilder = new StringBuilder();
                 for (int j = 0; j < length; j++) {
-                    res[ptr++] = CHARSET[random.nextInt(CHARSET.length)];
+                    stringBuilder.append(CHARSET.charAt(random.nextInt(CHARSET.length())));
                 }
-                res[ptr++] = '\n';
+                writer.write(stringBuilder.toString());
+                writer.newLine();
             }
-            Files.write(path, res, StandardOpenOption.APPEND);
             log(path, start);
         } while (Files.size(path) / (1024 * 1024) <= FILE_SIZE);
         log(path, start);
