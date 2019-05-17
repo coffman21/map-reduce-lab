@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,9 +16,9 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractFileWorker {
 
-    int nThreads;
-    ExecutorService executor;
-    boolean toSplit;
+    protected int nThreads;
+    protected ExecutorService executor;
+    private boolean toSplit;
 
     public AbstractFileWorker(int nThreads, boolean toSplit) {
         this.nThreads = nThreads;

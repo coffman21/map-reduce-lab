@@ -1,4 +1,4 @@
-package com.banditos.dummymapreduce;
+package com.banditos.dummymapreduce.count;
 
 import java.io.BufferedReader;
 import java.io.IOException;

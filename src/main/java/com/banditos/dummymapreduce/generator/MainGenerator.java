@@ -1,4 +1,4 @@
-package com.banditos.dummymapreduce;
+package com.banditos.dummymapreduce.generator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

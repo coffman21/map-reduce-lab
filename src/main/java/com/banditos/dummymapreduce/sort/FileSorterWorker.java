@@ -1,17 +1,15 @@
-package com.banditos.dummymapreduce;
+package com.banditos.dummymapreduce.sort;
 
+import com.banditos.dummymapreduce.AbstractFileWorker;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class FileSorterWorker extends AbstractFileWorker {

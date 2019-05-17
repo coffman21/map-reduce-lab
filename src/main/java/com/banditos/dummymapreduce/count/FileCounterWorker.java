@@ -1,24 +1,15 @@
-package com.banditos.dummymapreduce;
+package com.banditos.dummymapreduce.count;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
+import com.banditos.dummymapreduce.AbstractFileWorker;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
-public class FileCounterWorker extends AbstractFileWorker{
+public class FileCounterWorker extends AbstractFileWorker {
 
 
     public FileCounterWorker(int nThreads, boolean toSplit) {

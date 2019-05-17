@@ -1,4 +1,4 @@
-package com.banditos.dummymapreduce;
+package com.banditos.dummymapreduce.sort;
 
 import java.io.IOException;
 import java.nio.file.Path;

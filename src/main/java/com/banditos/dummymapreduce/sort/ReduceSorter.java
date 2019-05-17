@@ -1,8 +1,7 @@
-package com.banditos.dummymapreduce;
+package com.banditos.dummymapreduce.sort;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
