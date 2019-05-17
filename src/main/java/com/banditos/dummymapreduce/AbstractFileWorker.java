@@ -46,26 +46,33 @@ public abstract class AbstractFileWorker {
         Files.createDirectory(dirPath);
 
         BufferedReader bufferedReader = Files
-                .newBufferedReader(readFile, Charset.forName("UTF-8"));
+                .newBufferedReader(readFile);
 
         int i = 1;
-        long ptr = 0;
         List<Path> paths = new ArrayList<>();
-        long fileSize = Files.size(readFile);
-        long chunkSize = fileSize / nThreads;
 
+        List<BufferedWriter> writers = new ArrayList<>();
         while (i <= nThreads) {
             Path writeFile = Files.createFile(Paths.get(
-                    parentPathStr, "splitter", "split" + ptr + ".txt"));
+                    parentPathStr, "splitter", "split" + i + ".txt"));
             paths.add(writeFile);
             BufferedWriter bufferedWriter = Files
-                    .newBufferedWriter(writeFile, Charset.forName("UTF-8"));
-            do {
-                bufferedWriter.write(bufferedReader.read());
-            } while (ptr++ <= i * chunkSize);
+                    .newBufferedWriter(writeFile);
+            writers.add(bufferedWriter);
             i++;
         }
-        return paths;
+
+        while (true) {
+            for (BufferedWriter writer : writers) {
+                String s = bufferedReader.readLine();
+                if (s == null) {
+                    return paths;
+                } else {
+                    writer.write(s);
+                    writer.newLine();
+                }
+            }
+        }
     }
 
 
