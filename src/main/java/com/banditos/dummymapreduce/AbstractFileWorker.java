@@ -11,25 +11,21 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class FileWorker {
+public abstract class AbstractFileWorker {
 
-    private int nThreads;
-    private ExecutorService executor;
-    private boolean toSplit;
+    int nThreads;
+    ExecutorService executor;
+    boolean toSplit;
 
-    public FileWorker(int nThreads, boolean toSplit) {
+    public AbstractFileWorker(int nThreads, boolean toSplit) {
         this.nThreads = nThreads;
         this.executor = Executors.newFixedThreadPool(nThreads);
         this.toSplit = toSplit;
     }
-
 
     public List<Path> splitFile(Path readFile) throws IOException {
         String parentPathStr = readFile.getParent().toString();
@@ -39,7 +35,7 @@ public class FileWorker {
                     .stream()
                     .map(file -> Paths.get(file.getPath()))
                     .collect(
-                    Collectors.toList());
+                            Collectors.toList());
         }
 
 
@@ -72,22 +68,5 @@ public class FileWorker {
         return paths;
     }
 
-    public int countWordEntries(List<Path> files, String word) {
-        List<Future<Map<String, Integer>>> futures = new ArrayList<>();
-        for (int i = 0; i < nThreads; i++) {
-            final Future<Map<String, Integer>> future = executor
-                    .submit(new MapCounter(files.get(i)));
-            futures.add(future);
-        }
-        int total = 0;
-        for (Future<Map<String, Integer>> f : futures) {
-            try {
-                total += f.get().getOrDefault(word, 0);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-        executor.shutdown();
-        return total;
-    }
+
 }

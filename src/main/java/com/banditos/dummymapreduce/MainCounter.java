@@ -11,12 +11,12 @@ public class MainCounter {
     private static final String WORD = "M6RvQptghDn8zqTQtCfSNJwOJng2OtBmA4EeHo29qsIXroIJoYo3rAOK3WzvLsarxQRSd8zwmOxrmOY2yWKrhA7t910A2ulgdJcJiFctX2fZya0z";
 
     public static void main(String[] args) throws IOException {
-        FileWorker fileWorker;
+        FileCounterWorker fileWorker;
         if (args.length >= 1 && args[0].equals("false")) {
             System.out.println("not running splitting");
-            fileWorker = new FileWorker(8, false);
+            fileWorker = new FileCounterWorker(8, false);
         } else {
-            fileWorker = new FileWorker(8, true);
+            fileWorker = new FileCounterWorker(8, true);
         }
 
         long start = System.currentTimeMillis();
